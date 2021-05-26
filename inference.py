@@ -19,10 +19,6 @@ if gpus:
         # Memory growth must be set before GPUs have been initialized
         print(e)
 
-tf.keras.backend.clear_session()
-model_path = 'inference_graph/saved_model'
-model = tf.saved_model.load(model_path)
-
 def scale_bbox(w, h, bbox):
     y1, x1, y2, x2 = tf.unstack(bbox, axis=-1)
     y1 = y1 * w
@@ -59,6 +55,10 @@ def draw(image, y_pred, b_pred, confidence):
     return image
 
 if __name__ == '__main__':
+    tf.keras.backend.clear_session()
+    model_path = 'inference_graph/saved_model'
+    model = tf.saved_model.load(model_path)
+    
     test_path = 'test_images/*.jpg'
     out_path = 'samples'
     if not os.path.exists(out_path):
